@@ -89,7 +89,7 @@ function playGame() {
             console.log("Something went terribly wrong for you to get here!");
         }
     }
-
+ 
     for (let i = 1; i <= 5; i++) {
         let humanSelection = getHumanChoice();
         let computerSelection = getComputerChoice();
