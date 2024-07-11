@@ -35,71 +35,94 @@ function getHumanChoice() {
     
 };
 
+let btn = document.querySelectorAll(".btn");
+let content = document.querySelector(".results");
+let result = document.createElement("p");
+let score = document.createElement("p");
+content.appendChild(result);
+content.appendChild(score);
+let humanScore = 0;
+let computerScore = 0;
+let playAgain = document.createElement("button");
 
-
-function playGame() {
-    let humanScore = 0;
-    let computerScore = 0;
-    let round = 1;
-
-    function playRound(humanChoice, computerChoice) {
-        // human = rock
-        if (humanChoice === 'Rock' && computerChoice === 'Rock') {
-            console.log(`It's a tie! Your choice: ${humanChoice} Computer's choice: ${computerChoice}`)
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Rock' && computerChoice ===  'Paper') {
-            console.log(`You lose! The computer chose ${computerChoice} and you chose ${humanChoice}.`);
-            computerScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Rock' && computerChoice === 'Scissors') {
-            console.log(`You win! You chose ${humanChoice} and the computer chose ${computerChoice}`);
-            humanScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-    
-        // human = paper
-        } else if (humanChoice === 'Paper' && computerChoice === 'Rock') {
-            console.log(`You win! You chose ${humanChoice} and the computer chose ${computerChoice}`);
-            humanScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Paper' && computerChoice === 'Paper') {
-            console.log(`It's a tie! Your choice: ${humanChoice} Computer's choice: ${computerChoice}`)
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Paper' && computerChoice === 'Scissors') {
-            console.log(`You lose! The computer chose ${computerChoice} and you chose ${humanChoice}.`);
-            computerScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-
-        // human = scissors
-        } else if (humanChoice === 'Scissors' && computerChoice === 'Rock') {
-            console.log(`You lose! The computer chose ${computerChoice} and you chose ${humanChoice}.`);
-            computerScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Scissors' && computerChoice === 'Paper') {
-            console.log(`You win! You chose ${humanChoice} and the computer chose ${computerChoice}`);
-            humanScore++;
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        } else if (humanChoice === 'Scissors' && computerChoice === 'Scissors') {
-            console.log(`It's a tie! Your choice: ${humanChoice} Computer's choice: ${computerChoice}`)
-            console.log(`The current score is: You: ${humanScore} Computer: ${computerScore}`);
-        // exception
-        // code is unnecessary since the getHumanChoice function throws the same error anyway.
-        // } else if (humanChoice === undefined) {
-        //     throw new TypeError("Invalid value, please enter 'Rock', 'Paper', or 'Scissors'.");
-        } else {
-            console.log("Something went terribly wrong for you to get here!");
+btn.forEach((button) => {
+    button.addEventListener("click", (e) => {
+        if (humanScore !== 5 && computerScore !== 5) {
+            playGame()(e.target.id, getComputerChoice());
+        } else if (humanScore === 5) {
+            result.textContent = 'You win! :)';
+            score.textContent = ''
+            content.appendChild(playAgain);
+            playAgain.textContent = 'Play Again?'
+            playAgain.addEventListener("click", () => {
+                result.textContent = '';
+                humanScore = 0;
+                computerScore = 0;
+                playAgain.remove();
+            })
+        } else if (computerScore === 5) {
+            result.textContent = 'You lose! :(';
+            score.textContent = ''
+            content.appendChild(playAgain);
+            playAgain.textContent = 'Play Again?'
+            playAgain.addEventListener("click", () => {
+                result.textContent = '';
+                humanScore = 0;
+                computerScore = 0;
+                playAgain.remove();
+            })
         }
-    }
- 
-    for (let i = 1; i <= 5; i++) {
-        let humanSelection = getHumanChoice();
-        let computerSelection = getComputerChoice();
-        console.log(`ROUND ${round}!`);
-        playRound(humanSelection, computerSelection);
-        round++;
-    }
-}
+        
+    })
+})
 
-playGame();
+
+// the game
+function playGame() {
+    return function playRound(humanChoice, computerChoice) {
+            // human = rock
+            if (humanChoice === 'Rock' && computerChoice === 'Rock') {
+                result.textContent = `It's a tie! You chose ${humanChoice} and the computer chose ${computerChoice}.`
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}.`;
+            } else if (humanChoice === 'Rock' && computerChoice ===  'Paper') {
+                result.textContent = `You lose! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                computerScore++;
+            } else if (humanChoice === 'Rock' && computerChoice === 'Scissors') {
+                result.textContent = `You win! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                humanScore++;
+
+            // human = paper
+            } else if (humanChoice === 'Paper' && computerChoice === 'Rock') {
+                result.textContent = `You win! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                humanScore++;
+            } else if (humanChoice === 'Paper' && computerChoice === 'Paper') {
+                result.textContent = `It's a tie! You chose ${humanChoice} and the computer chose ${computerChoice}.`
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}.`;
+            } else if (humanChoice === 'Paper' && computerChoice === 'Scissors') {
+                result.textContent = `You lose! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                computerScore++;
+
+            // human = scissors
+            } else if (humanChoice === 'Scissors' && computerChoice === 'Rock') {
+                result.textContent = `You lose! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                computerScore++;
+            } else if (humanChoice === 'Scissors' && computerChoice === 'Paper') {
+                result.textContent = `You win! You chose ${humanChoice} and the computer chose ${computerChoice}.`;
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}`;
+                humanScore++;
+            } else if (humanChoice === 'Scissors' && computerChoice === 'Scissors') {
+                result.textContent = `It's a tie! You chose ${humanChoice} and the computer chose ${computerChoice}.`
+                score.textContent = ` The current score is: You: ${humanScore} Computer: ${computerScore}.`;
+            } else {
+                console.log("Something went terribly wrong for you to get here!");
+            }
+        }
+}
 
 
 
